@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-o", "sudokuSolver",
+                "source/main.cpp",
+                "source/sudoku.cpp",
+                "source/strategy.cpp",
+                "source/helpers.cpp",
+                "source/sudokuSolver.cpp",
+                "-I", "headers"
+                //"-o", "threats",
+                //"threats.cpp",
+                //"-lcurl"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            //"problemMatcher": ["$gcc"]
+        }
+    ]
+}
