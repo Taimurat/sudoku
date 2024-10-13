@@ -6,6 +6,8 @@
 #include "../headers/sudokuSolver.h"
 //#include <unordered_map>
 
+//#define DEBUG
+
 int main() {
     Sudoku easiestSudoku(vector<vector<int>>
     {
@@ -33,14 +35,20 @@ int main() {
     });
 
     SudokuSolver::initializeStrategies();
+
+    #ifdef DEBUG
     gentleSudoku.debugDisplay();
     SudokuSolver slv(&gentleSudoku);
-    for (int i = 0; i < 5; ++i)
-    {
-        std::cout << gentleSudoku.GetIsValid() << std::endl;
-        slv.solve();
-        gentleSudoku.debugDisplay();
-    }
+    std::cout << gentleSudoku.GetIsValid() << std::endl;
+    slv.solve();
+    gentleSudoku.debugDisplay();
+    #else
+    gentleSudoku.display();
+    SudokuSolver slv(&gentleSudoku);
+    std::cout << "After solving:" << std::endl;
+    slv.solve();
+    gentleSudoku.display();
+    #endif //DEBUG
 
     return 0;
 }
