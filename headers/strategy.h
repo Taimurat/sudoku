@@ -58,5 +58,25 @@ public:
     ~HiddenSinglet() override;
 };
 
+class NakedPair : public BaseStrategy
+{
+public:
+    NakedPair();
+
+    SolvedCells apply(const Sudoku&) override;
+    
+    ~NakedPair() override;
+};
+
+class NakedTripled : public BaseStrategy
+{
+public:
+    NakedTripled();
+
+    SolvedCells apply(const Sudoku&) override;
+    
+    ~NakedTripled() override;
+};
+
 
 #endif //_STRATEGY_H_

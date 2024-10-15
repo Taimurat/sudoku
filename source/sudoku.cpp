@@ -73,6 +73,11 @@ size_t Cell::getCountOfCandidates() const
     return this->candidates.size();
 }
 
+vector<int> Cell::getCandidates() const
+{
+    return this->candidates;
+}
+
 /**
  * @brief This function erases candidate in Cell. 
  *

@@ -4,7 +4,6 @@
 #include "../headers/sudokuSolver.h"
 #include <iostream>
 #include <vector>
-#include <tuple>
 
 int SudokuSolver::COUNT_OF_SUDOKU_CELLS = 81;
 vector<BaseStrategy*> SudokuSolver::Strategies = vector<BaseStrategy*>{};
@@ -38,6 +37,8 @@ void SudokuSolver::initializeStrategies()
     Strategies.push_back(new ClearCandidatesByRules());
     Strategies.push_back(new NakedSingle());
     Strategies.push_back(new HiddenSinglet());
+    Strategies.push_back(new NakedPair());
+    Strategies.push_back(new NakedTripled());
 }
 
 void SudokuSolver::solve()

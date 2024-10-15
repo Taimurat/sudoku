@@ -34,20 +34,35 @@ int main() {
         vector<int> {6, 7, 0, 4, 0, 0, 0, 0, 0}
     });
 
+    Sudoku moderateSudoku(vector<vector<int>>
+    {
+        vector<int> {7, 2, 0, 0, 9, 6, 0, 0, 3},
+        vector<int> {0, 0, 0, 2, 0, 5, 0, 0, 0},
+        vector<int> {0, 8, 0, 0, 0, 4, 0, 2, 0},
+        vector<int> {0, 0, 0, 0, 0, 0, 0, 6, 0},
+        vector<int> {1, 0, 6, 5, 0, 3, 8, 0, 7},
+        vector<int> {0, 4, 0, 0, 0, 0, 0, 0, 0},
+        vector<int> {0, 3, 0, 8, 0, 0, 0, 9, 0},
+        vector<int> {0, 0, 0, 7, 0, 2, 0, 0, 0},
+        vector<int> {2, 0, 0, 4, 3, 0, 0, 1, 8}
+    });
+
     SudokuSolver::initializeStrategies();
 
     #ifdef DEBUG
-    gentleSudoku.debugDisplay();
-    SudokuSolver slv(&gentleSudoku);
-    std::cout << gentleSudoku.GetIsValid() << std::endl;
+    moderateSudoku.debugDisplay();
+    SudokuSolver slv(&moderateSudoku);
+    std::cout << moderateSudoku.GetIsValid() << std::endl;
     slv.solve();
-    gentleSudoku.debugDisplay();
+    moderateSudoku.debugDisplay();
+
     #else
-    gentleSudoku.display();
-    SudokuSolver slv(&gentleSudoku);
+    moderateSudoku.display();
+    SudokuSolver slv(&moderateSudoku);
     std::cout << "After solving:" << std::endl;
     slv.solve();
-    gentleSudoku.display();
+    moderateSudoku.display();
+
     #endif //DEBUG
 
     return 0;

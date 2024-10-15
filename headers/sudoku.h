@@ -41,7 +41,10 @@ public:
     bool eraseCandidate(int);
 
     bool hasCandidate(int) const;
+
     size_t getCountOfCandidates() const;
+
+    vector<int> getCandidates() const;
 
     static vector<int> AllCandidates;
 
