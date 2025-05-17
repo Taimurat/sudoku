@@ -85,6 +85,74 @@ void SudokuSolver::solve()
     }
 }
 
+int SudokuSolver::brutSolve()
+{
+    solve();
+    std::vector<Sudoku*> solutions = solutionFinder();
+
+    std::cout << solutions.size() << std::endl;
+    if (solutions.size() == 1)
+    {
+        sudoku = std::move(new Sudoku(*solutions[0]));
+    }
+    else
+    {
+        std::cout << "There are " << solutions.size() << " counts of solutions" << std::endl;
+    }
+    return solutions.size();
+}
+
+vector<Sudoku*>& SudokuSolver::solutionFinder()
+{
+    std::vector<Sudoku*>* solution = new std::vector<Sudoku*>;
+
+    Sudoku* tmpSudoku = new Sudoku(*sudoku);
+    
+    std::stack<Cell*>* tmp = new std::stack<Cell*>();
+    for (std::vector<Cell*> row : tmpSudoku->getBoard())
+    {
+        for (Cell* cell : row)
+        {
+            if (!(cell->getIsSolved())) { tmp->push(cell); }
+        }
+    }
+    
+    int res = brutSolveOneCell(tmpSudoku, tmp, solution);
+    
+    return *solution;
+}
+
+int SudokuSolver::brutSolveOneCell(Sudoku* tmpSudoku, std::stack<Cell*>* tmp, vector<Sudoku*>* result)
+{
+    if (tmp->empty()) { 
+        std::cout << tmpSudoku->GetIsValid() << std::endl; 
+        tmpSudoku->debugDisplay(); 
+        if (tmpSudoku->GetIsValid())
+        {
+            Sudoku* solution = new Sudoku(*tmpSudoku);
+            result->push_back(solution);
+        }
+        return tmpSudoku->GetIsValid();
+    }
+    int res = 0;
+    
+    Cell* cell = tmp->top();
+    tmp->pop();
+    for (int candidate : cell->getCandidates())
+    {
+        cell->setValue(candidate);
+        if (tmpSudoku->GetIsValid())
+        {
+            tmpSudoku->display();
+            res += brutSolveOneCell(tmpSudoku, tmp, result);
+        }
+    }
+    
+    *cell = Cell(*sudoku->getBoard()[cell->getRow()][cell->getColumn()]);
+    tmp->push(cell);
+    return res;
+}
+
 bool SudokuSolver::SudokuIsSolved()
 {
     return countOfSolvedCells == COUNT_OF_SUDOKU_CELLS;

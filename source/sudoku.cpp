@@ -5,12 +5,15 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <fstream>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::queue;
+
+extern std::ofstream fout;
 
 
 
@@ -46,14 +49,26 @@ Cell& Cell::operator=(const Cell& other)
     return *this;
 }
 
-Cell::Cell (Cell&& other) noexcept
+Cell& Cell::operator=(const Cell&& other) noexcept
 {
     this->value = other.value;
     this->row = other.row;
     this->column = other.column;
     this->box = other.box;
     this->isSolved = other.isSolved;
-    this->candidates = other.candidates;
+    this->candidates = std::move(other.candidates);
+
+    return *this;
+}
+
+Cell::Cell (const Cell&& other) noexcept
+{
+    this->value = other.value;
+    this->row = other.row;
+    this->column = other.column;
+    this->box = other.box;
+    this->isSolved = other.isSolved;
+    this->candidates = std::move(other.candidates);
 }
 
 int Cell::getValue() const { return value; }
@@ -122,7 +137,7 @@ bool Cell::eraseCandidate(int value)
 int Sudoku::AllValues[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 Sudoku::Sudoku() {
-    // Инициализация доски
+    // Board initialize 
     this->board.resize(9, vector<Cell*>(9));
     this->inversedBoard.resize(9, vector<Cell*>(9));
     this->byBoxBoard.resize(9, vector<Cell*>(9));
@@ -167,16 +182,46 @@ Sudoku::Sudoku(int** board) : Sudoku() {
     }
 }
 
+Sudoku::Sudoku(const Sudoku& other)
+{
+    this->isSolved = other.isSolved;
+
+    this->board.resize(9, vector<Cell*>(9));
+    this->inversedBoard.resize(9, vector<Cell*>(9));
+    this->byBoxBoard.resize(9, vector<Cell*>(9));
+    this->SolvedNumbers.resize(10, vector<Cell*>{});
+
+    for (size_t row = 0; row < other.board.size(); ++row) {
+        for (size_t column = 0; column < other.board[row].size(); ++column) {
+            this->board[row][column] = new Cell(*other.board[row][column]);
+            this->inversedBoard[column][row] = this->board[row][column];
+            this->byBoxBoard[row / 3 * 3 + column / 3][row % 3 * 3 + column % 3] = this->board[row][column];
+            if (other.board[row][column]->getIsSolved()) { this->SolvedNumbers[this->board[row][column]->getValue()].push_back(this->board[row][column]); }
+        }
+    }
+}
+
+Sudoku::~Sudoku()
+{
+    //if (board == nullptr) { return; }
+    for (auto& row : board) {
+        for (Cell* cell : row) {
+            delete cell;
+        }
+    }
+}
+
 void Sudoku::display() const
 {
     for (int row = 0; row < 9; ++row) 
     {
         for (int column = 0; column < 9; ++column) 
         {
-            cout << board[row][column]->getValue() << " ";
+            fout << board[row][column]->getValue() << " ";
         }
-        cout << endl;
+        fout << endl;
     }
+    fout << endl;
 }
 
 void Sudoku::debugDisplay() const

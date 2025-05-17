@@ -4,6 +4,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <stack>
 
 #include "../headers/strategy.h"
 #include "../headers/helpers.h"
@@ -29,7 +30,9 @@ public:
 
     Cell& operator=(const Cell&);
 
-    Cell (Cell&&) noexcept;
+    Cell& operator=(const Cell&&) noexcept;
+
+    Cell (const Cell&&) noexcept;
 
     int getValue() const;
     int getRow() const;
@@ -67,6 +70,10 @@ public:
     Sudoku(const vector<vector<int>>&);
 
     Sudoku(int** board);
+
+    Sudoku(const Sudoku& other);
+
+    ~Sudoku();
 
     void display() const;
 

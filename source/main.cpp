@@ -6,7 +6,7 @@
 #include "../headers/sudokuSolver.h"
 //#include <unordered_map>
 
-//#define DEBUG
+#define DEBUG
 
 int main() {
 
@@ -72,24 +72,37 @@ int main() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0}
     });
 
+    Sudoku MySudoku(vector<vector<int>>
+    {
+        {0, 2, 0, 0, 0, 0, 0, 7, 0},
+        {0, 0, 0, 5, 0, 0, 0, 6, 0},
+        {0, 0, 0, 9, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 3, 5, 0, 0},
+        {0, 1, 0, 0, 7, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 9, 0, 8},
+        {9, 0, 5, 0, 0, 0, 4, 0, 0},
+        {6, 0, 0, 0, 2, 0, 0, 0, 0},
+        {0, 0, 0, 8, 0, 0, 0, 0, 0}
+    });
+
 
     SudokuSolver::initializeStrategies();
 
-    Sudoku& testSudoku = nakedMadnessSudoku;
+    Sudoku& testSudoku = MySudoku;
 
     #ifdef DEBUG
     testSudoku.debugDisplay();
     SudokuSolver slv(&testSudoku);
     std::cout << testSudoku.GetIsValid() << std::endl;
-    slv.solve();
-    testSudoku.debugDisplay();
+    slv.brutSolve();
+    slv.getSudoku()->debugDisplay();
 
     #else
     testSudoku.display();
     SudokuSolver slv(&testSudoku);
     std::cout << "After solving:" << std::endl;
     slv.solve();
-    testSudoku.display();
+    slv.getSudoku()->debugDisplay();
 
     #endif //DEBUG
 

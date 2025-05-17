@@ -25,12 +25,19 @@ public:
 
     void solve();
 
+    int brutSolve();
+    
     bool SudokuIsSolved();
+
+    vector<Sudoku*>& solutionFinder();
 
     static void initializeStrategies();
 
     ~SudokuSolver();
 private:
+
+    int brutSolveOneCell(Sudoku*, std::stack<Cell*>*, vector<Sudoku*>*);
+
     Sudoku* sudoku;
     int countOfSolvedCells;
     queue<Cell*> AllNewSolved;
